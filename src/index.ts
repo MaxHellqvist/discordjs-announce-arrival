@@ -12,12 +12,14 @@ const app = new Client();
 
 app.on("message", async (msg) => {
   if (msg.author.bot) return;
+
   if (msg.content.startsWith("!ping")) {
     console.info(`[in][${msg.author.username}] ${msg.content}`);
     const responseMsg = await msg.channel.send("Pong!");
     console.info(`[out][${msg.guild?.me?.user.username}] ${responseMsg.content}`);
     deleteMessageIfAble(msg);
   }
+
   if (msg.content.startsWith("!playtest")) {
     const streamOptions = { seek: 0, volume: 1 };
     if (msg.member == null) return;
@@ -35,15 +37,16 @@ app.on("message", async (msg) => {
     }
     deleteMessageIfAble(msg);
   }
-  if (msg.content.startsWith("!botactivate")) {
-    if(msg.member != null && msg.member.permissions.has("ADMINISTRATOR")){
+
+  if (msg.content.startsWith("!boton")) {
+    if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(true);
     }
     deleteMessageIfAble(msg);
   }
 
-  if (msg.content.startsWith("!botdeactivate")) {
-    if(msg.member != null && msg.member.permissions.has("ADMINISTRATOR")){
+  if (msg.content.startsWith("!botoff")) {
+    if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(false);
     }
     deleteMessageIfAble(msg);
