@@ -12,5 +12,11 @@ declare namespace NodeJS {
      * This can be used to control log levels, debug features, as well as the database instance that will be used.
      */
     DEPLOY_ENVIRONMENT: "development" | "production";
+
+    FIREBASE_CONFIG: string;
+
+    DATABASE_VERSION: string;
+
+    DATABASE_URL: string;
   }
 }
