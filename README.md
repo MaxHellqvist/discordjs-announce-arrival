@@ -28,7 +28,7 @@
 4. Your bot is now live
 
 Note: It is recommended to have 2 different Discord Applications, one for Production and one for Development.
-That way you can develope your bot further without needing to take down the production bot while you develop.
+That way you can develop your bot further without needing to take down the production bot while you develop.
 
 ## Env
 
