@@ -22,7 +22,7 @@ app.on("message", async (msg) => {
     const streamOptions = { seek: 0, volume: 1 };
     if (msg.member == null) return;
     const voiceChannel = msg.member.voice.channel
-    if (voiceChannel) {
+    if (voiceChannel && msg.member.permissions.has("ADMINISTRATOR")) {
       voiceChannel.join().then(connection => {
         console.info(`BOT joined channel ${voiceChannel}`);
         const stream = ytdl("https://youtu.be/m9zhgDsd4P4", { filter: 'audioonly' });
