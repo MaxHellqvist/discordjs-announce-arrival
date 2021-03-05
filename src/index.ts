@@ -3,7 +3,7 @@ import { Client } from "discord.js";
 import ytdl from 'ytdl-core';
 
 import { deleteMessageIfAble } from "./helpers/msgDelete";
-import { getAnnouncement, registerAnnouncement } from "./db";
+import { getActive, getAnnouncement, registerAnnouncement, setActive } from "./db";
 
 // Enable console.debug logs
 console.logLevel = process.env.DEPLOY_ENVIRONMENT === "development" ? 4 : 3;
@@ -35,6 +35,19 @@ app.on("message", async (msg) => {
     }
     deleteMessageIfAble(msg);
   }
+  if (msg.content.startsWith("!botactivate")) {
+    if(msg.member != null && msg.member.permissions.has("ADMINISTRATOR")){
+      setActive(true);
+    }
+    deleteMessageIfAble(msg);
+  }
+
+  if (msg.content.startsWith("!botdeactivate")) {
+    if(msg.member != null && msg.member.permissions.has("ADMINISTRATOR")){
+      setActive(false);
+    }
+    deleteMessageIfAble(msg);
+  }
 });
 
 app.on("voiceStateUpdate", async (oldMember, newMember) => {
@@ -43,6 +56,9 @@ app.on("voiceStateUpdate", async (oldMember, newMember) => {
   console.info(newMember + " joined " + newMemberChannel + " from " + oldMemberChannel);
 
   if (oldMemberChannel !== newMemberChannel && newMemberChannel !== null) {
+    const atleastOneAdmin = newMemberChannel.members.some(member => member.permissions.has("ADMINISTRATOR"));
+    const checkActive = await getActive()
+    if (!atleastOneAdmin || checkActive == false) return;
     const maybeAnnouncmentData = await getAnnouncement(newMember.id)
     if (maybeAnnouncmentData !== null) {
       const streamOptions = { seek: 0, volume: 1 };

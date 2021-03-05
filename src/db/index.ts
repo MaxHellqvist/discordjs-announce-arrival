@@ -10,3 +10,14 @@ export const getAnnouncement = async (userID: string) => {
             return snap.val();
         })
 }
+
+export const setActive = (isActive: boolean) => {
+    db.child(`isActive`).set(isActive);
+}
+
+export const getActive = async () => {
+    return db.child(`isActive`).get()
+    .then((snap) => {
+        return snap.val();
+    })
+}
