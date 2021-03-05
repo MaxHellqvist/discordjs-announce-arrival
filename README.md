@@ -8,7 +8,13 @@
       1. Create a `.env` file from `.env.template`
       2. Fill in your DISCORD_TOKEN (can be found in the discord developer portal)
    4. Invite bot
-2. Setup Heroku
+2. Setup Firebase
+   1. Go to https://console.firebase.google.com/
+   2. Create a new project
+   3. Go to Project Settings -> Service Account
+   4. Add databaseUrl to Environment Variable DATABASE_URL
+   5. Generate a new key and convert it to json for the Environment Variable FIREBASE_CONFIG
+3. Setup Heroku
    1. Create Heroku account
    2. Connect your github account to your heroku account
    3. Create a new Heroku App
@@ -20,15 +26,18 @@
       2. Click "reveal config vars"
       3. Add DISCORD_TOKEN from `.env`
       4. Add DEPLOY_ENVIRONMENT with the value `"production"`
+      5. Add FIREBASE_CONFIG (see step 2.5)
+      6. Add DATABASE_VERSION (example `"v1"`)
+      7. Add DATABASE_URL (see step 2.4)
    8. Setup worker dyno
       1. Go to the Resources tab
       2. Enable "worker" dyno
       3. Disable "web" dyno
-3. Commit your code and any changes to github
-4. Your bot is now live
+4. Commit your code and any changes to github
+5. Your bot is now live
 
 Note: It is recommended to have 2 different Discord Applications, one for Production and one for Development.
-That way you can develope your bot further without needing to take down the production bot while you develop.
+That way you can develop your bot further without needing to take down the production bot while you develop.
 
 ## Env
 
@@ -48,4 +57,4 @@ DEPLOY_ENVIRONMENT: "development" | "production";
 
 ## Invite bot
 
-`https://discord.com/oauth2/authorize?client_id=<YOUR_CLIENT_ID>&scope=bot`
+`https://discord.com/oauth2/authorize?client_id=<APPLICATION_CLIENT_ID>&scope=bot`
