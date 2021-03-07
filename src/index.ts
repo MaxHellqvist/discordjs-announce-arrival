@@ -20,7 +20,7 @@ app.on("message", async (msg) => {
     deleteMessageIfAble(msg);
   }
 
-  if (msg.content.startsWith("!playtest")) {
+  if (msg.content.startsWith("!test")) {
     const streamOptions = { seek: 0, volume: 1 };
     if (msg.member == null) return;
     const voiceChannel = msg.member.voice.channel
@@ -28,23 +28,6 @@ app.on("message", async (msg) => {
       voiceChannel.join().then(connection => {
         console.info(`BOT joined channel ${voiceChannel}`);
         const stream = ytdl("https://www.youtube.com/watch?v=jLtbFWJm9_M", { filter: 'audioonly' });
-        const dispatcher = connection.play(stream, streamOptions);
-        dispatcher.on("finish", () => {
-          console.info(`BOT leaving channel ${connection.channel}`);
-          connection.channel.leave();
-        });
-      }).catch(err => console.error(err));
-    }
-  }
-
-  if (msg.content.startsWith("!knock")) {
-    const streamOptions = { seek: 0, volume: 1 };
-    if (msg.member == null) return;
-    const voiceChannel = msg.member.voice.channel
-    if (voiceChannel && msg.member.permissions.has("ADMINISTRATOR")) {
-      voiceChannel.join().then(connection => {
-        console.info(`BOT joined channel ${voiceChannel}`);
-        const stream = ytdl("https://www.youtube.com/watch?v=BpNRbHnLSqs", { filter: 'audioonly' });
         const dispatcher = connection.play(stream, streamOptions);
         dispatcher.on("finish", () => {
           console.info(`BOT leaving channel ${connection.channel}`);
