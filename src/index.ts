@@ -77,11 +77,12 @@ app.on("voiceStateUpdate", async (oldMember, newMember) => {
     if (!atleastOneAdmin || checkActive == false) return;
     const maybeAnnouncmentData = await getAnnouncement(newMember.id);
     if (maybeAnnouncmentData !== null) {
-      const streamOptions = { seek: 0, volume: maybeAnnouncmentData.volume };
+      const streamVolume = await maybeAnnouncmentData.volume;
+      const streamOptions = { seek: 0, volume: streamVolume };
       newMemberChannel.join().then(connection => {
         console.info(`BOT joined channel ${newMemberChannel}`);
         const stream = ytdl(maybeAnnouncmentData.audioUrl, { filter: 'audioonly' });
-        console.info(`playing ${maybeAnnouncmentData.audioUrl} for user:${newMember.id}`);
+        console.info(`playing ${maybeAnnouncmentData.audioUrl} for user:${newMember.id} at volume ${streamVolume}`);
         const dispatcher = connection.play(stream, streamOptions);
         dispatcher.on("finish", () => {
           console.info(`BOT leaving channel ${connection.channel}`);
