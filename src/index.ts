@@ -51,7 +51,7 @@ app.on("message", async (msg) => {
 
   if (msg.content.startsWith("!volume")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
-      const mention = msg.mentions.users.first()
+      const mention = msg.mentions.users.first();
       if (!mention) {
         console.error("No user referenced");
         deleteMessageIfAble(msg);
@@ -67,15 +67,15 @@ app.on("message", async (msg) => {
 });
 
 app.on("voiceStateUpdate", async (oldMember, newMember) => {
-  const newMemberChannel = newMember.channel
-  const oldMemberChannel = oldMember.channel
+  const newMemberChannel = newMember.channel;
+  const oldMemberChannel = oldMember.channel;
   console.info(newMember + " joined " + newMemberChannel + " from " + oldMemberChannel);
 
   if (oldMemberChannel !== newMemberChannel && newMemberChannel !== null) {
     const atleastOneAdmin = newMemberChannel.members.some(member => member.permissions.has("ADMINISTRATOR"));
-    const checkActive = await getActive()
+    const checkActive = await getActive();
     if (!atleastOneAdmin || checkActive == false) return;
-    const maybeAnnouncmentData = await getAnnouncement(newMember.id)
+    const maybeAnnouncmentData = await getAnnouncement(newMember.id);
     if (maybeAnnouncmentData !== null) {
       const streamOptions = { seek: 0, volume: maybeAnnouncmentData.volume };
       newMemberChannel.join().then(connection => {
