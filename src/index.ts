@@ -77,8 +77,7 @@ app.on("voiceStateUpdate", async (oldMember, newMember) => {
     if (!atleastOneAdmin || checkActive == false) return;
     const maybeAnnouncmentData = await getAnnouncement(newMember.id)
     if (maybeAnnouncmentData !== null) {
-      const volume = maybeAnnouncmentData.volume;
-      const streamOptions = { seek: 0, volume: volume };
+      const streamOptions = { seek: 0, volume: maybeAnnouncmentData.volume };
       newMemberChannel.join().then(connection => {
         console.info(`BOT joined channel ${newMemberChannel}`);
         const stream = ytdl(maybeAnnouncmentData.audioUrl, { filter: 'audioonly' });
