@@ -3,7 +3,7 @@ import { Client } from "discord.js";
 import ytdl from 'ytdl-core';
 
 import { deleteMessageIfAble } from "./helpers/msgDelete";
-import { getActive, getAnnouncement, registerAnnouncement, setActive } from "./db";
+import { getActive, getAnnouncement, setActive, setVolume } from "./db";
 
 // Enable console.debug logs
 console.logLevel = process.env.DEPLOY_ENVIRONMENT === "development" ? 4 : 3;
@@ -27,7 +27,7 @@ app.on("message", async (msg) => {
     if (voiceChannel && msg.member.permissions.has("ADMINISTRATOR")) {
       voiceChannel.join().then(connection => {
         console.info(`BOT joined channel ${voiceChannel}`);
-        const stream = ytdl("https://youtu.be/m9zhgDsd4P4", { filter: 'audioonly' });
+        const stream = ytdl("https://www.youtube.com/watch?v=jLtbFWJm9_M", { filter: 'audioonly' });
         const dispatcher = connection.play(stream, streamOptions);
         dispatcher.on("finish", () => {
           console.info(`BOT leaving channel ${connection.channel}`);
@@ -35,22 +35,35 @@ app.on("message", async (msg) => {
         });
       }).catch(err => console.error(err));
     }
-    deleteMessageIfAble(msg);
   }
 
   if (msg.content.startsWith("!boton")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(true);
     }
-    deleteMessageIfAble(msg);
   }
 
   if (msg.content.startsWith("!botoff")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(false);
     }
-    deleteMessageIfAble(msg);
   }
+
+  if (msg.content.startsWith("!volume")) {
+    if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
+      const mention = msg.mentions.users.first()
+      if (!mention) {
+        console.error("No user referenced");
+        deleteMessageIfAble(msg);
+        return;
+      }
+      const args = msg.content.slice(7).trim().split(' ');
+      const userId = mention.id;
+      const volume = parseFloat(args[1]);
+      setVolume(userId, volume);
+    }
+  }
+  deleteMessageIfAble(msg);
 });
 
 app.on("voiceStateUpdate", async (oldMember, newMember) => {
@@ -64,7 +77,8 @@ app.on("voiceStateUpdate", async (oldMember, newMember) => {
     if (!atleastOneAdmin || checkActive == false) return;
     const maybeAnnouncmentData = await getAnnouncement(newMember.id)
     if (maybeAnnouncmentData !== null) {
-      const streamOptions = { seek: 0, volume: 1 };
+      const volume = maybeAnnouncmentData.volume;
+      const streamOptions = { seek: 0, volume: volume };
       newMemberChannel.join().then(connection => {
         console.info(`BOT joined channel ${newMemberChannel}`);
         const stream = ytdl(maybeAnnouncmentData.audioUrl, { filter: 'audioonly' });
