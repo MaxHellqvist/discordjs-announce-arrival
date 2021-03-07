@@ -37,6 +37,23 @@ app.on("message", async (msg) => {
     }
   }
 
+  if (msg.content.startsWith("!knock")) {
+    const streamOptions = { seek: 0, volume: 1 };
+    if (msg.member == null) return;
+    const voiceChannel = msg.member.voice.channel
+    if (voiceChannel && msg.member.permissions.has("ADMINISTRATOR")) {
+      voiceChannel.join().then(connection => {
+        console.info(`BOT joined channel ${voiceChannel}`);
+        const stream = ytdl("https://www.youtube.com/watch?v=BpNRbHnLSqs", { filter: 'audioonly' });
+        const dispatcher = connection.play(stream, streamOptions);
+        dispatcher.on("finish", () => {
+          console.info(`BOT leaving channel ${connection.channel}`);
+          connection.channel.leave();
+        });
+      }).catch(err => console.error(err));
+    }
+  }
+
   if (msg.content.startsWith("!boton")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(true);
