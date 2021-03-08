@@ -35,18 +35,21 @@ app.on("message", async (msg) => {
         });
       }).catch(err => console.error(err));
     }
+    deleteMessageIfAble(msg);
   }
 
   if (msg.content.startsWith("!boton")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(true);
     }
+    deleteMessageIfAble(msg);
   }
 
   if (msg.content.startsWith("!botoff")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       setActive(false);
     }
+    deleteMessageIfAble(msg);
   }
 
   if (msg.content.startsWith("!volume")) {
@@ -62,8 +65,8 @@ app.on("message", async (msg) => {
       const volume = parseFloat(args[1]);
       setVolume(userId, volume);
     }
+    deleteMessageIfAble(msg);
   }
-  deleteMessageIfAble(msg);
 });
 
 app.on("voiceStateUpdate", async (oldMember, newMember) => {
