@@ -40,6 +40,9 @@ app.on("message", async (msg) => {
 
   if (msg.content.startsWith("!boton")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
+      const me = msg.guild?.me;
+      await me?.setNickname("");
+      me?.setNickname(me.displayName + "(Active)");
       setActive(true);
     }
     deleteMessageIfAble(msg);
@@ -47,6 +50,9 @@ app.on("message", async (msg) => {
 
   if (msg.content.startsWith("!botoff")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
+      const me = msg.guild?.me;
+      await me?.setNickname("")
+      me?.setNickname(me.displayName + "(Inactive)");
       setActive(false);
     }
     deleteMessageIfAble(msg);
