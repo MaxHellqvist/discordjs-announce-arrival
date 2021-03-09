@@ -40,14 +40,24 @@ app.on("message", async (msg) => {
 
   if (msg.content.startsWith("!boton")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
+      const me = msg.guild?.me;
+      await me?.setNickname("");
       setActive(true);
+      if (me?.displayName.length != undefined && me.displayName.length <= 22) {
+        me?.setNickname(me.displayName + "(Active)");
+      }
     }
     deleteMessageIfAble(msg);
   }
 
   if (msg.content.startsWith("!botoff")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
+      const me = msg.guild?.me;
+      await me?.setNickname("");
       setActive(false);
+      if (me?.displayName.length != undefined && me.displayName.length <= 22) {
+        me?.setNickname(me.displayName + "(Inactive)");
+      }
     }
     deleteMessageIfAble(msg);
   }
