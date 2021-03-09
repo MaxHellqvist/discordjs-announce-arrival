@@ -42,8 +42,8 @@ app.on("message", async (msg) => {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       const me = msg.guild?.me;
       await me?.setNickname("");
-      me?.setNickname(me.displayName + "(Active)");
       setActive(true);
+      me?.setNickname(me.displayName + "(Active)");
     }
     deleteMessageIfAble(msg);
   }
@@ -52,8 +52,8 @@ app.on("message", async (msg) => {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       const me = msg.guild?.me;
       await me?.setNickname("")
-      me?.setNickname(me.displayName + "(Inactive)");
       setActive(false);
+      me?.setNickname(me.displayName + "(Inactive)");
     }
     deleteMessageIfAble(msg);
   }
