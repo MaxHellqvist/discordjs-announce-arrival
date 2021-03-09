@@ -43,7 +43,9 @@ app.on("message", async (msg) => {
       const me = msg.guild?.me;
       await me?.setNickname("");
       setActive(true);
-      me?.setNickname(me.displayName + "(Active)");
+      if (me?.displayName.length != undefined && me.displayName.length <= 22) {
+        me?.setNickname(me.displayName + "(Active)");
+      }
     }
     deleteMessageIfAble(msg);
   }
@@ -51,9 +53,11 @@ app.on("message", async (msg) => {
   if (msg.content.startsWith("!botoff")) {
     if (msg.member != null && msg.member.permissions.has("ADMINISTRATOR")) {
       const me = msg.guild?.me;
-      await me?.setNickname("")
+      await me?.setNickname("");
       setActive(false);
-      me?.setNickname(me.displayName + "(Inactive)");
+      if (me?.displayName.length != undefined && me.displayName.length <= 22) {
+        me?.setNickname(me.displayName + "(Inactive)");
+      }
     }
     deleteMessageIfAble(msg);
   }
