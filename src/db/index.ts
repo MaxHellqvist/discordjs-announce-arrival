@@ -1,4 +1,3 @@
-import { ScriptSnapshot } from "typescript";
 import { db } from "./firebase";
 
 export const registerAnnouncement = (userID: string, audioUrl: string, volume: number) => {
