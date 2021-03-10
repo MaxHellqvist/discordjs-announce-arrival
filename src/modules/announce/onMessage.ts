@@ -38,7 +38,7 @@ export const onMessage = (app: Client) => async (message: Message) => {
             const presence: PresenceData = {
                 afk: false,
                 activity: {
-                    name: 'new arrivals',
+                    name: 'arrivals',
                     type: 'WATCHING',
                 },
                 status: 'online',
