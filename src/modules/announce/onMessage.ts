@@ -1,6 +1,6 @@
 import { Message, Client, PresenceData } from 'discord.js';
 import { deleteMessageIfAble } from "../../helpers/msgDelete";
-import { setActive, setVolume } from "../../db";
+import { setActive, setGlobalCooldown, setVolume } from "../../db";
 
 import ytdl from 'ytdl-core';
 
@@ -86,6 +86,15 @@ export const onMessage = (app: Client) => async (message: Message) => {
             const userId = mention.id;
             const volume = parseFloat(args[1]);
             setVolume(userId, volume);
+        }
+        deleteMessageIfAble(message);
+    }
+
+    if (message.content.startsWith("!cd")) {
+        if (message.member != null && message.member.permissions.has("ADMINISTRATOR")) {
+            const args = message.content.slice(3).trim().split(' ');
+            const cooldown = parseFloat(args[0]);
+            setGlobalCooldown(cooldown);
         }
         deleteMessageIfAble(message);
     }
